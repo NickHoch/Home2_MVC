@@ -1,24 +1,48 @@
-﻿<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-        a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-        is an ideal platform for building RESTful applications on the .NET Framework.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
+﻿@using Home2_MVC.Models;
+@model HomeViewModel
+@section header
+{
+    @*@using (Html.BeginForm("SignIn", "Home", FormMethod.Post))
+        {
+            <label for="login">Login: </label>
+            <input id="login" name="login" type="text" />
+            <label for="password">Password: </label>
+            <input id="password" name="password" type="password" />
+            <button class="btn btn-danger" id="login" value="Sign in">Sign in</button>
+        }*@
+}
+@using Home2_MVC.ModelsDB
+@{
+    var grid = new WebGrid(Model.Order.Items.Keys as IEnumerable<Product>);
+}
+
+@using (Html.BeginForm())
+{
+    <label>Products</label>
+    @Html.DropDownList("products", Model.AvailableProducts);
+    <input id="quantity" type="number" name="quantity" min="1" max="5" value="1"><br>
+    <input type="submit" name="submitButton" value="AddToBucket" class="btn btn-primary" />
+    @*<input type="submit" name="submitButton" value="MakeOrder" class="clientInfo" />*@
+
+    @Html.ActionLink("MakeOrder", "MakeOrder", Model.Order.Info, new { @class = "clientInfo btn btn-primary" })
+
+    @grid.GetHtml()
+    <div id="modDialog" class="modal fade">
+        <div id="dialogContent" class="modal-dialog"></div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
-    </div>
-</div>
+}
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".clientInfo").click(function (e) {
+                e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#dialogContent').html(data);
+                    $('#modDialog').modal('show');
+                });
+            });
+        })
+    </script>
+}
