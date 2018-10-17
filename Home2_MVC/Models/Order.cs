@@ -1,5 +1,4 @@
-﻿using Home2_MVC.ModelsDB;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,9 +9,10 @@ namespace Home2_MVC.Models
     {
         public Order()
         {
-            Items = new Dictionary<Product, int>();
+            Items = new List<ItemOrder>();
         }
+        public int Id { get; set; }
         public ContactInfo Info { get; set; }
-        public Dictionary<Product, int> Items { get; set; }
+        public virtual ICollection<ItemOrder> Items { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using System.Data.Entity;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Home2_MVC.ModelsDB
+namespace Home2_MVC.Models
 {
     internal class CustomInitializer<T> : DropCreateDatabaseAlways<Model>
     {

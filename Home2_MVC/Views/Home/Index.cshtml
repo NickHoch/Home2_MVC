@@ -11,9 +11,9 @@
             <button class="btn btn-danger" id="login" value="Sign in">Sign in</button>
         }*@
 }
-@using Home2_MVC.ModelsDB
+
 @{
-    var grid = new WebGrid(Model.Order.Items.Keys as IEnumerable<Product>);
+    var grid = new WebGrid(Model.Order.Items.Select(x => x.Product) as IEnumerable<Product>);
 }
 
 @using (Html.BeginForm())
@@ -44,13 +44,13 @@
                     success: function (data) {
                         console.log(this.href)
                         $('#dialogContent').html(data);
-                        $('#modDialog').on('shown.bs.modal', function () {
-                            $('#close').onclick = function () {
-                                let name = $('#Name').val();
-                                let phoneNumber = $('#PhoneNumber').val();
-                                console.log("33333");
-                            };
-                        });
+                        //$('#modDialog').on('shown.bs.modal', function () {
+                        //    $('#close').onclick = function () {
+                        //        let name = $('#Name').val();
+                        //        let phoneNumber = $('#PhoneNumber').val();
+                        //        console.log("33333");
+                        //    };
+                        //});
                         $('#modDialog').modal('show');                        
                     }
                 });

@@ -6,7 +6,6 @@ using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
 using Home2_MVC.Models;
-using Home2_MVC.ModelsDB;
 
 namespace Home2_MVC.Controllers
 {
@@ -21,7 +20,7 @@ namespace Home2_MVC.Controllers
             if (Session["Bucket"] != null)
             {
                 var bucket = Session["Bucket"];
-                var bucketDictionary = bucket as Dictionary<Product, int>;
+                var bucketDictionary = bucket as List<ItemOrder>;
                 model.Order.Items = bucketDictionary;
                 Session["Bucket"] = null;
                 Session["Bucket"] = bucket;
@@ -33,6 +32,33 @@ namespace Home2_MVC.Controllers
         public ActionResult Index(FormCollection formCollection)
         {
             HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
+            if(formCollection["name"] != null)
+            {
+                var order = new Order
+                {
+                    Info = new ContactInfo
+                    {
+                        Name = formCollection["name"],
+                        PhoneNumber = formCollection["phonenumber"]
+                    }
+                };
+                _ctx.Orders.Add(order);
+                var items = Session["Bucket"] as List<ItemOrder>;
+                items.ForEach(x => x.Order = order);
+                _ctx.ItemOrders.AddRange(items);
+                _ctx.SaveChanges();
+                //_ctx.Orders.Add(new Order
+                //{
+                //    Info = new ContactInfo
+                //    {
+                //        Name = formCollection["name"],
+                //        PhoneNumber = formCollection["phonenumber"]
+                //    },
+                //    Items = Session["Bucket"] as List<ItemOrder>
+                //});
+                //_ctx.SaveChanges();
+                return View(model);
+            }
 
             int idProd = Convert.ToInt32(formCollection["products"]);
             string Name = _ctx.Products.SingleOrDefault(x => x.Id == idProd).Name;
@@ -41,48 +67,40 @@ namespace Home2_MVC.Controllers
 
             if (Session["Bucket"] == null)
             {
-                model.Order.Items.Add(product, quanProd);
-                Session["Bucket"] = new Dictionary<Product, int>()
+                model.Order.Items.Add(new ItemOrder
                 {
+                    Product = product,
+                    Quantity = quanProd
+                });
+                Session["Bucket"] = new List<ItemOrder>()
+                {
+                    new ItemOrder
                     {
-                        product,
-                        quanProd
+                        Product = product,
+                        Quantity = quanProd
                     }
                 };
             }
             else
-            {
-                
+            {                
                 var bucket = Session["Bucket"];
-                var bucketDictionary = bucket as Dictionary<Product, int>;
-                bucketDictionary.Add(product, quanProd);
-                model.Order.Items = bucketDictionary;
+                var bucketList = bucket as List<ItemOrder>;
+                bucketList.Add(new ItemOrder
+                {
+                    Product = product,
+                    Quantity = quanProd
+                });
+                model.Order.Items = bucketList;
                 Session["Bucket"] = null;
-                Session["Bucket"] = bucket;
+                Session["Bucket"] = bucketList;
             }            
             return View(model);
         }
 
         public ActionResult MakeOrder()
         {
-            //if (Session["Bucket"] != null)
-            //{
-            //    var order = new Order
-            //    {
-            //        User = new Models.User
-            //        {
-            //            Name = "Vasya",
-            //            PhoneNumber = "+380988877755"
-            //        },
-            //        Items = Session["Bucket"] as Dictionary<Product, int>
-            //    };
-            //}
-            ContactInfo info = new ContactInfo();
             Session["Bucket"] = null;
-            return PartialView("PopUp", info);
-
-            //HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
-            //return View(model);
+            return PartialView("_PopUp", new ContactInfo());
         }
 
         //[HttpPost]
@@ -107,18 +125,23 @@ namespace Home2_MVC.Controllers
             Product product = new Product(idProd, Name);
             if (Session["Bucket"] == null)
             {
-                Session["Bucket"] = new Dictionary<Product, int>()
+                Session["Bucket"] = new List<ItemOrder>()
                 {
+                    new ItemOrder
                     {
-                        product,
-                        quanProd
+                        Product = product,
+                        Quantity = quanProd
                     }
                 };
             }
             else
             {
                 var bucket = Session["Bucket"];
-                (bucket as Dictionary<Product, int>).Add(product, quanProd);
+                (bucket as List<ItemOrder>).Add(new ItemOrder
+                {
+                    Product = product,
+                    Quantity = quanProd
+                });
                 Session["Bucket"] = bucket;
             }
             HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
@@ -144,7 +167,7 @@ namespace Home2_MVC.Controllers
             if (user != null)
             {
                 var passwordDb = user.Password;
-                var passwordHashed = ModelsDB.Hash.HashPassword(password);
+                var passwordHashed = Models.Hash.HashPassword(password);
 
                 if (String.Equals(passwordHashed, passwordDb))
                 {

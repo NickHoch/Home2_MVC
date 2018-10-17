@@ -1,0 +1,23 @@
+﻿@using Home2_MVC.Models
+@model ContactInfo
+
+<div class="modal-content">
+    <div class="modal-header">
+        @Html.Label("Enter contact info:")
+    </div>
+    <div class="modal-body">
+        @using (Html.BeginForm("Home", "MakeOrder"))
+        {
+            @Html.LabelFor(m => m.Name);
+            <br />
+            @Html.EditorFor(m => m.Name);
+            <br />
+            @Html.LabelFor(m => m.PhoneNumber);
+            <br />
+            @Html.EditorFor(m => m.PhoneNumber);
+            <br />
+            <input type="submit" value="Submit" class="btn btn-primary" />
+        }
+    </div>
+  
+</div>
