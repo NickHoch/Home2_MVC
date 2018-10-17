@@ -22,6 +22,9 @@ namespace Home2_MVC
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/save").Include(
+               "~/Scripts/save.js"));
         }
     }
 }

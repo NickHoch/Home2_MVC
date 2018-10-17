@@ -18,6 +18,7 @@
 
 @using (Html.BeginForm())
 {
+
     <label>Products</label>
     @Html.DropDownList("products", Model.AvailableProducts);
     <input id="quantity" type="number" name="quantity" min="1" max="5" value="1"><br>
@@ -38,9 +39,20 @@
             $.ajaxSetup({ cache: false });
             $(".clientInfo").click(function (e) {
                 e.preventDefault();
-                $.get(this.href, function (data) {
-                    $('#dialogContent').html(data);
-                    $('#modDialog').modal('show');
+                $.get({
+                    url: this.href,
+                    success: function (data) {
+                        console.log(this.href)
+                        $('#dialogContent').html(data);
+                        $('#modDialog').on('shown.bs.modal', function () {
+                            $('#close').onclick = function () {
+                                let name = $('#Name').val();
+                                let phoneNumber = $('#PhoneNumber').val();
+                                console.log("33333");
+                            };
+                        });
+                        $('#modDialog').modal('show');                        
+                    }
                 });
             });
         })

@@ -1,12 +1,12 @@
 ﻿@using Home2_MVC.Models
 @model ContactInfo
+
 <div class="modal-content">
     <div class="modal-header">
-
+        @Html.Label("Enter contact info:")
     </div>
     <div class="modal-body">
-        @Html.Label("Enter contact info:")
         @Html.EditorForModel();
-        <button class="close" data-dismiss="modal" area-hidden="true">Close</button>
+        <button id="close" class="close" data-dismiss="modal" area-hidden="true">Close</button>
     </div>
 </div>
