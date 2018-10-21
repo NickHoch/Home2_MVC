@@ -10,11 +10,11 @@ namespace Home2_MVC.Models
     {
         public HomeViewModel(List<Product> products)
         {
-            AvailableProducts = new SelectList(products, "Id", "Name", 1);
+            Products = products;
             Order = new Order();
         }
         public Order Order { get; set; }
-        public SelectList AvailableProducts { get; set; }
+        public List<Product> Products { get; set; }
     }
 
 }

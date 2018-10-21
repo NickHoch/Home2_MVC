@@ -17,89 +17,140 @@ namespace Home2_MVC.Controllers
         public ActionResult Index()
         {
             HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
-            if (Session["Bucket"] != null)
-            {
-                var bucket = Session["Bucket"];
-                var bucketDictionary = bucket as List<ItemOrder>;
-                model.Order.Items = bucketDictionary;
-                Session["Bucket"] = null;
-                Session["Bucket"] = bucket;
-            }
+            //if (Session["Bucket"] != null)
+            //{
+            //    var bucket = Session["Bucket"];
+            //    var bucketDictionary = bucket as List<ItemOrder>;
+            //    model.Order.Items = bucketDictionary;
+            //    Session["Bucket"] = null;
+            //    Session["Bucket"] = bucket;
+            //}
             return View(model);
         }
 
-        [HttpPost]
-        public ActionResult Index(FormCollection formCollection)
+        public ActionResult Submit(FormCollection formCollection)
         {
             HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
-            if(formCollection["name"] != null)
-            {
-                var order = new Order
-                {
-                    Info = new ContactInfo
-                    {
-                        Name = formCollection["name"],
-                        PhoneNumber = formCollection["phonenumber"]
-                    }
-                };
-                _ctx.Orders.Add(order);
-                var items = Session["Bucket"] as List<ItemOrder>;
-                items.ForEach(x => x.Order = order);
-                _ctx.ItemOrders.AddRange(items);
-                _ctx.SaveChanges();
-                //_ctx.Orders.Add(new Order
-                //{
-                //    Info = new ContactInfo
-                //    {
-                //        Name = formCollection["name"],
-                //        PhoneNumber = formCollection["phonenumber"]
-                //    },
-                //    Items = Session["Bucket"] as List<ItemOrder>
-                //});
-                //_ctx.SaveChanges();
-                return View(model);
-            }
+            var orderList = formCollection["orderList"];
 
-            int idProd = Convert.ToInt32(formCollection["products"]);
-            string Name = _ctx.Products.SingleOrDefault(x => x.Id == idProd).Name;
-            Product product = new Product(idProd, Name);
-            int quanProd = Convert.ToInt32(formCollection["quantity"]);
-
-            if (Session["Bucket"] == null)
+            Order order = new Order
             {
-                model.Order.Items.Add(new ItemOrder
+                Info = new ContactInfo
                 {
-                    Product = product,
-                    Quantity = quanProd
-                });
-                Session["Bucket"] = new List<ItemOrder>()
-                {
-                    new ItemOrder
-                    {
-                        Product = product,
-                        Quantity = quanProd
-                    }
-                };
-            }
-            else
-            {                
-                var bucket = Session["Bucket"];
-                var bucketList = bucket as List<ItemOrder>;
-                bucketList.Add(new ItemOrder
-                {
-                    Product = product,
-                    Quantity = quanProd
-                });
-                model.Order.Items = bucketList;
-                Session["Bucket"] = null;
-                Session["Bucket"] = bucketList;
-            }            
+                    Name = formCollection["clientName"],
+                    PhoneNumber = formCollection["clientNumber"]
+                },
+
+            };
             return View(model);
         }
+        //[HttpPost]
+        //public ActionResult AddToBucket()
+        //{
+        //    return View();
+        //}
+        [HttpPost]
+        public ActionResult AddToBucket(int id, int quantity)
+        {
+            //if (Session["Bucket"] == null)
+            //{
+            //    Session["Bucket"] = new List<ItemOrder>()
+            //    {
+            //        new ItemOrder
+            //        {
+            //            Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
+            //            Quantity = quantity
+            //        }
+            //    };
+            //}
+            //else
+            //{
+            //    var bucket = Session["Bucket"];
+            //    var bucketList = bucket as List<ItemOrder>;
+            //    bucketList.Add(new ItemOrder
+            //    {
+            //        Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
+            //        Quantity = quantity
+            //    });
+            //    Session["Bucket"] = null;
+            //    Session["Bucket"] = bucketList;
+            //}
+            HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
+            return View(model);
+        }
+
+        //[HttpPost]
+        //public ActionResult Index(FormCollection formCollection)
+        //{
+        //    HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
+        //    if(formCollection["name"] != null)
+        //    {
+        //        var order = new Order
+        //        {
+        //            Info = new ContactInfo
+        //            {
+        //                Name = formCollection["name"],
+        //                PhoneNumber = formCollection["phonenumber"]
+        //            }
+        //        };
+        //        _ctx.Orders.Add(order);
+        //        var items = Session["Bucket"] as List<ItemOrder>;
+        //        items.ForEach(x => x.Order = order);
+        //        _ctx.ItemOrders.AddRange(items);
+        //        _ctx.SaveChanges();
+        //        //_ctx.Orders.Add(new Order
+        //        //{
+        //        //    Info = new ContactInfo
+        //        //    {
+        //        //        Name = formCollection["name"],
+        //        //        PhoneNumber = formCollection["phonenumber"]
+        //        //    },
+        //        //    Items = Session["Bucket"] as List<ItemOrder>
+        //        //});
+        //        //_ctx.SaveChanges();
+        //        return View(model);
+        //    }
+
+        //    int idProd = Convert.ToInt32(formCollection["products"]);
+        //    string Name = _ctx.Products.SingleOrDefault(x => x.Id == idProd).Name;
+        //    Product product = new Product(idProd, Name);
+        //    int quanProd = Convert.ToInt32(formCollection["quantity"]);
+
+        //    if (Session["Bucket"] == null)
+        //    {
+        //        model.Order.Items.Add(new ItemOrder
+        //        {
+        //            Product = product,
+        //            Quantity = quanProd
+        //        });
+        //        Session["Bucket"] = new List<ItemOrder>()
+        //        {
+        //            new ItemOrder
+        //            {
+        //                Product = product,
+        //                Quantity = quanProd
+        //            }
+        //        };
+        //    }
+        //    else
+        //    {                
+        //        var bucket = Session["Bucket"];
+        //        var bucketList = bucket as List<ItemOrder>;
+        //        bucketList.Add(new ItemOrder
+        //        {
+        //            Product = product,
+        //            Quantity = quanProd
+        //        });
+        //        model.Order.Items = bucketList;
+        //        Session["Bucket"] = null;
+        //        Session["Bucket"] = bucketList;
+        //    }            
+        //    return View(model);
+        //}
 
         public ActionResult MakeOrder()
         {
-            Session["Bucket"] = null;
+            //Session["Bucket"] = null;
             return PartialView("_PopUp", new ContactInfo());
         }
 
@@ -117,78 +168,78 @@ namespace Home2_MVC.Controllers
         //    }
         //}
 
-        private ActionResult AddToBucket(FormCollection formCollection)
-        {
-            int idProd = Convert.ToInt32(formCollection["products"]);
-            string Name = _ctx.Products.SingleOrDefault(x => x.Id == idProd).Name;
-            int quanProd = Convert.ToInt32(formCollection["quantity"]);
-            Product product = new Product(idProd, Name);
-            if (Session["Bucket"] == null)
-            {
-                Session["Bucket"] = new List<ItemOrder>()
-                {
-                    new ItemOrder
-                    {
-                        Product = product,
-                        Quantity = quanProd
-                    }
-                };
-            }
-            else
-            {
-                var bucket = Session["Bucket"];
-                (bucket as List<ItemOrder>).Add(new ItemOrder
-                {
-                    Product = product,
-                    Quantity = quanProd
-                });
-                Session["Bucket"] = bucket;
-            }
-            HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
-            return View(model);
-        }
+        //private ActionResult AddToBucket(FormCollection formCollection)
+        //{
+        //    int idProd = Convert.ToInt32(formCollection["products"]);
+        //    string Name = _ctx.Products.SingleOrDefault(x => x.Id == idProd).Name;
+        //    int quanProd = Convert.ToInt32(formCollection["quantity"]);
+        //    Product product = new Product(idProd, Name);
+        //    if (Session["Bucket"] == null)
+        //    {
+        //        Session["Bucket"] = new List<ItemOrder>()
+        //        {
+        //            new ItemOrder
+        //            {
+        //                Product = product,
+        //                Quantity = quanProd
+        //            }
+        //        };
+        //    }
+        //    else
+        //    {
+        //        var bucket = Session["Bucket"];
+        //        (bucket as List<ItemOrder>).Add(new ItemOrder
+        //        {
+        //            Product = product,
+        //            Quantity = quanProd
+        //        });
+        //        Session["Bucket"] = bucket;
+        //    }
+        //    HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
+        //    return View(model);
+        //}
 
-        public ActionResult SignIn()
-        {
-            NameValueCollection nvc = Request.Form;
-            string login = String.Empty;
-            string password = String.Empty;
-            if (!string.IsNullOrEmpty(nvc["login"]))
-            {
-                login = nvc["login"];
-            }
-            if (!string.IsNullOrEmpty(nvc["password"]))
-            {
-                password = nvc["password"];
-            }
-            Model _ctx = new Model();
+        //public ActionResult SignIn()
+        //{
+        //    NameValueCollection nvc = Request.Form;
+        //    string login = String.Empty;
+        //    string password = String.Empty;
+        //    if (!string.IsNullOrEmpty(nvc["login"]))
+        //    {
+        //        login = nvc["login"];
+        //    }
+        //    if (!string.IsNullOrEmpty(nvc["password"]))
+        //    {
+        //        password = nvc["password"];
+        //    }
+        //    Model _ctx = new Model();
 
-            var user = _ctx.Users.SingleOrDefault(x => x.Login == login);
-            if (user != null)
-            {
-                var passwordDb = user.Password;
-                var passwordHashed = Models.Hash.HashPassword(password);
+        //    var user = _ctx.Users.SingleOrDefault(x => x.Login == login);
+        //    if (user != null)
+        //    {
+        //        var passwordDb = user.Password;
+        //        var passwordHashed = Models.Hash.HashPassword(password);
 
-                if (String.Equals(passwordHashed, passwordDb))
-                {
-                    var token = Guid.NewGuid().ToString();
-                    user.Token = token;
-                    _ctx.SaveChanges();
-                    if (user.IsAdmin)
-                    {
-                        Response.Cookies.Add(new HttpCookie("IsAdmin", "1"));
-                    }
-                    else
-                    {
-                        Response.Cookies.Add(new HttpCookie("IsAdmin", "0"));
-                    }
-                    Response.Cookies.Add(new HttpCookie("Token", token));
-                    Response.Cookies.Add(new HttpCookie("User", user.Login));
-                    //ViewBag.User = user;
-                }
-            }
-            return View("Index");
-        }
+        //        if (String.Equals(passwordHashed, passwordDb))
+        //        {
+        //            var token = Guid.NewGuid().ToString();
+        //            user.Token = token;
+        //            _ctx.SaveChanges();
+        //            if (user.IsAdmin)
+        //            {
+        //                Response.Cookies.Add(new HttpCookie("IsAdmin", "1"));
+        //            }
+        //            else
+        //            {
+        //                Response.Cookies.Add(new HttpCookie("IsAdmin", "0"));
+        //            }
+        //            Response.Cookies.Add(new HttpCookie("Token", token));
+        //            Response.Cookies.Add(new HttpCookie("User", user.Login));
+        //            //ViewBag.User = user;
+        //        }
+        //    }
+        //    return View("Index");
+        //}
 
         public ActionResult LogOut()
         {

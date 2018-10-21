@@ -1,60 +1,22 @@
 ﻿@using Home2_MVC.Models;
 @model HomeViewModel
-@section header
-{
-    @*@using (Html.BeginForm("SignIn", "Home", FormMethod.Post))
+<table class="table">
+    <thred class="thead-dark">
+        <tr>
+            <th>Image</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thred>
+    <tbody>
+        @foreach (var item in Model.Products)
         {
-            <label for="login">Login: </label>
-            <input id="login" name="login" type="text" />
-            <label for="password">Password: </label>
-            <input id="password" name="password" type="password" />
-            <button class="btn btn-danger" id="login" value="Sign in">Sign in</button>
-        }*@
-}
-
-@{
-    var grid = new WebGrid(Model.Order.Items.Select(x => x.Product) as IEnumerable<Product>);
-}
-
-@using (Html.BeginForm())
-{
-
-    <label>Products</label>
-    @Html.DropDownList("products", Model.AvailableProducts);
-    <input id="quantity" type="number" name="quantity" min="1" max="5" value="1"><br>
-    <input type="submit" name="submitButton" value="AddToBucket" class="btn btn-primary" />
-    @*<input type="submit" name="submitButton" value="MakeOrder" class="clientInfo" />*@
-
-    @Html.ActionLink("MakeOrder", "MakeOrder", Model.Order.Info, new { @class = "clientInfo btn btn-primary" })
-
-    @grid.GetHtml()
-    <div id="modDialog" class="modal fade">
-        <div id="dialogContent" class="modal-dialog"></div>
-    </div>
-}
-@section scripts
-{
-    <script type="text/javascript">
-        $(function () {
-            $.ajaxSetup({ cache: false });
-            $(".clientInfo").click(function (e) {
-                e.preventDefault();
-                $.get({
-                    url: this.href,
-                    success: function (data) {
-                        console.log(this.href)
-                        $('#dialogContent').html(data);
-                        //$('#modDialog').on('shown.bs.modal', function () {
-                        //    $('#close').onclick = function () {
-                        //        let name = $('#Name').val();
-                        //        let phoneNumber = $('#PhoneNumber').val();
-                        //        console.log("33333");
-                        //    };
-                        //});
-                        $('#modDialog').modal('show');                        
-                    }
-                });
-            });
-        })
-    </script>
-}
+            <tr id="@("tr" + item.Id)">
+                <td>@Html.Partial("_Image", item.UrlImage)</td>
+                <td>@Html.Partial("_Description", new Product{ Name = item.Name, Description = item.Description})</td>
+                <td>@Html.Partial("_Action", new Product { Id = item.Id, Price = item.Price })</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.Partial("_Order", Model.Order)

@@ -25,6 +25,9 @@ namespace Home2_MVC
 
             bundles.Add(new ScriptBundle("~/bundles/save").Include(
                "~/Scripts/save.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/buy").Include(
+                "~/Scripts/buy.js"));
         }
     }
 }

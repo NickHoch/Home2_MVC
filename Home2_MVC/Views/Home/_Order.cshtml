@@ -1,0 +1,21 @@
+﻿@using Home2_MVC.Models
+@model Order
+
+@using (Html.BeginForm("Submit", "Home", FormMethod.Post))
+{
+    <label>Order:</label>
+    <br />
+    <p id="orderList" name ="orderList"></p>
+    <label>Total sum:</label>
+    <br />
+    <p id="totalSum"></p>
+    <label>Name:</label>
+    <br />
+    <input type="text" name="clientName" />
+    <br />
+    <label>Phone number:</label>
+    <br />
+    <input type="text" name="clientNumber" />
+    <br />
+    <input type="submit" value="MakeOrder" class="btn btn-primary" />
+}

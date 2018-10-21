@@ -15,3 +15,8 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.imageContainer {
+    width: 100%;
+    height: auto;
+}

@@ -1,0 +1,4 @@
+﻿@using Home2_MVC.Models
+@model Product
+<input type="number" min="0" max="5" value="1" />
+<button data-rowId=@("tr" + Model.Id) data-price="@Model.Price">Buy</button>
