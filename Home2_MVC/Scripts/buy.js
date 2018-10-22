@@ -1,6 +1,6 @@
 ﻿$(function () {
     $('td > button').click(function () {
-        let id = $(this).data("rowid");
+        let id = $(this).data('rowid');
         let name = $('#' + id + ' #pizzaName').text();
         let description = $('#' + id + ' #pizzaDescription').text();
         let quantity = parseInt($('#' + id + ' input').val());
@@ -15,9 +15,19 @@
             'id': productId,
             'quantity': quantity
         });
+
+        //var url = $(this).data('url');
+        //console.log(url);
+        //$.ajax({
+        //    type: 'POST',
+        //    url: url,
+        //    data: data,
+        //    contentType: 'application/json'
+        //});
+
         $.ajax({
-            type: "POST",
-            url: 'Home/AddToBucket',
+            type: 'POST',
+            url: '/Home/AddToBucket',
             data: data,
             contentType: 'application/json'
         });
