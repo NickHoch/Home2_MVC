@@ -40,9 +40,11 @@ namespace Home2_MVC.Controllers
                     Name = formCollection["clientName"],
                     PhoneNumber = formCollection["clientNumber"]
                 },
-
+                Items = Session["Bucket"] as List<ItemOrder>
             };
-            return View(model);
+            _ctx.Orders.Add(order);
+            _ctx.SaveChanges();
+            return View("Index", model);
         }
         //[HttpPost]
         //public ActionResult AddToBucket()
@@ -52,29 +54,32 @@ namespace Home2_MVC.Controllers
         [HttpPost]
         public ActionResult AddToBucket(int? id, int? quantity)
         {
-            //if (Session["Bucket"] == null)
-            //{
-            //    Session["Bucket"] = new List<ItemOrder>()
-            //    {
-            //        new ItemOrder
-            //        {
-            //            Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
-            //            Quantity = quantity
-            //        }
-            //    };
-            //}
-            //else
-            //{
-            //    var bucket = Session["Bucket"];
-            //    var bucketList = bucket as List<ItemOrder>;
-            //    bucketList.Add(new ItemOrder
-            //    {
-            //        Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
-            //        Quantity = quantity
-            //    });
-            //    Session["Bucket"] = null;
-            //    Session["Bucket"] = bucketList;
-            //}
+            if (id != null && quantity != null)
+            {
+                if (Session["Bucket"] == null)
+                {
+                    Session["Bucket"] = new List<ItemOrder>
+                {
+                    new ItemOrder
+                    {
+                        Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
+                        Quantity = (int)quantity
+                    }
+                };
+                }
+                else
+                {
+                    var bucket = Session["Bucket"];
+                    var bucketList = bucket as List<ItemOrder>;
+                    bucketList.Add(new ItemOrder
+                    {
+                        Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
+                        Quantity = (int)quantity
+                    });
+                    Session["Bucket"] = null;
+                    Session["Bucket"] = bucketList;
+                }
+            }
             HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
             return View("Index", model);
         }
@@ -179,11 +184,11 @@ namespace Home2_MVC.Controllers
         //    return View(model);
         //}
 
-        public ActionResult MakeOrder()
-        {
-            //Session["Bucket"] = null;
-            return PartialView("_PopUp", new ContactInfo());
-        }
+        //public ActionResult MakeOrder()
+        //{
+        //    //Session["Bucket"] = null;
+        //    return PartialView("_PopUp", new ContactInfo());
+        //}
 
         //[HttpPost]
         //public ActionResult Index(FormCollection formCollection, string submitButton)
@@ -272,22 +277,22 @@ namespace Home2_MVC.Controllers
         //    return View("Index");
         //}
 
-        public ActionResult LogOut()
-        {
-            if (Request.Cookies["IsAdmin"] != null)
-            {
-                var c = new HttpCookie("IsAdmin");
-                c.Expires = DateTime.Now.AddDays(-1);
-                Response.Cookies.Add(c);
-            }
-            if (Request.Cookies["Token"] != null)
-            {
-                var c = new HttpCookie("Token");
-                c.Expires = DateTime.Now.AddDays(-1);
-                Response.Cookies.Add(c);
-            }
-            return View("Index");
-        }
+        //public ActionResult LogOut()
+        //{
+        //    if (Request.Cookies["IsAdmin"] != null)
+        //    {
+        //        var c = new HttpCookie("IsAdmin");
+        //        c.Expires = DateTime.Now.AddDays(-1);
+        //        Response.Cookies.Add(c);
+        //    }
+        //    if (Request.Cookies["Token"] != null)
+        //    {
+        //        var c = new HttpCookie("Token");
+        //        c.Expires = DateTime.Now.AddDays(-1);
+        //        Response.Cookies.Add(c);
+        //    }
+        //    return View("Index");
+        //}
     }
 }
 

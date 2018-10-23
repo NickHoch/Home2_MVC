@@ -12,7 +12,7 @@ namespace Home2_MVC.Models
             Items = new List<ItemOrder>();
         }
         public int Id { get; set; }
-        public ContactInfo Info { get; set; }
+        public virtual ContactInfo Info { get; set; }
         public virtual ICollection<ItemOrder> Items { get; set; }
     }
 }
