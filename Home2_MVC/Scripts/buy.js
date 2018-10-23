@@ -16,21 +16,15 @@
             'quantity': quantity
         });
 
-        //var url = $(this).data('url');
-        //console.log(url);
-        //$.ajax({
-        //    type: 'POST',
-        //    url: url,
-        //    data: data,
-        //    contentType: 'application/json'
-        //});
-
+        var url = $(this).data('url');
+        console.log(url);
         $.ajax({
             type: 'POST',
-            url: '/Home/AddToBucket',
+            url: url,
             data: data,
-            contentType: 'application/json'
+            async: true,
+            contentType: 'application/json',
+            success: function () { }
         });
     });
 });
-//url: '@Url.Action("AddToBucket", "Home")',

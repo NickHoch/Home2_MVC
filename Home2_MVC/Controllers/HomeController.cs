@@ -50,34 +50,65 @@ namespace Home2_MVC.Controllers
         //    return View();
         //}
         [HttpPost]
-        public ActionResult AddToBucket(int id, int quantity)
+        public ActionResult AddToBucket(int? id, int? quantity)
         {
-            if (Session["Bucket"] == null)
-            {
-                Session["Bucket"] = new List<ItemOrder>()
-                {
-                    new ItemOrder
-                    {
-                        Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
-                        Quantity = quantity
-                    }
-                };
-            }
-            else
-            {
-                var bucket = Session["Bucket"];
-                var bucketList = bucket as List<ItemOrder>;
-                bucketList.Add(new ItemOrder
-                {
-                    Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
-                    Quantity = quantity
-                });
-                Session["Bucket"] = null;
-                Session["Bucket"] = bucketList;
-            }
+            //if (Session["Bucket"] == null)
+            //{
+            //    Session["Bucket"] = new List<ItemOrder>()
+            //    {
+            //        new ItemOrder
+            //        {
+            //            Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
+            //            Quantity = quantity
+            //        }
+            //    };
+            //}
+            //else
+            //{
+            //    var bucket = Session["Bucket"];
+            //    var bucketList = bucket as List<ItemOrder>;
+            //    bucketList.Add(new ItemOrder
+            //    {
+            //        Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
+            //        Quantity = quantity
+            //    });
+            //    Session["Bucket"] = null;
+            //    Session["Bucket"] = bucketList;
+            //}
             HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
-            return View(model);
+            return View("Index", model);
         }
+
+
+        //[HttpPost]
+        //public ActionResult AddToBucket(int id, int quantity)
+        //{
+        //    if (Session["Bucket"] == null)
+        //    {
+        //        Session["Bucket"] = new List<ItemOrder>()
+        //        {
+        //            new ItemOrder
+        //            {
+        //                Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
+        //                Quantity = quantity
+        //            }
+        //        };
+        //    }
+        //    else
+        //    {
+        //        var bucket = Session["Bucket"];
+        //        var bucketList = bucket as List<ItemOrder>;
+        //        bucketList.Add(new ItemOrder
+        //        {
+        //            Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
+        //            Quantity = quantity
+        //        });
+        //        Session["Bucket"] = null;
+        //        Session["Bucket"] = bucketList;
+        //    }
+        //    HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
+        //    return View(model);
+        //}
 
         //[HttpPost]
         //public ActionResult Index(FormCollection formCollection)
