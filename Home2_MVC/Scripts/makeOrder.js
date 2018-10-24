@@ -1,7 +1,7 @@
 ﻿$(function () {
     $('#makeOrder').click(function () {
-        let clientName = $('clientName').val();
-        let clientNumber = $('clientNumber').val();
+        let clientName = $('clientName').text();
+        let clientNumber = $('clientNumber').text();
         let data = JSON.stringify({
             'clientName': clientName,
             'clientNumber': clientNumber
