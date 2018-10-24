@@ -13,5 +13,6 @@ namespace Home2_MVC.Models
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ItemOrder> ItemOrders { get; set; }
+        public virtual DbSet<ContactInfo> ContactInfos { get; set; }
     }
 }

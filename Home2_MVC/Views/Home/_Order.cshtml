@@ -1,21 +1,21 @@
 ﻿@using Home2_MVC.Models
-@model Order
+@model HomeViewModel
 
-@using (Html.BeginForm("Submit", "Home", FormMethod.Post))
-{
+@*@using (Html.BeginForm("MakeOrder", "Home", FormMethod.Post))
+{*@
     <label>Order:</label>
     <br />
-    <p id="orderList" name ="orderList"></p>
+    <p id="orderList" name ="orderList">@Model.OrderList</p>
     <label>Total sum:</label>
     <br />
-    <p id="totalSum"></p>
+    <p id="totalSum">@Model.TotalSum</p>
     <label>Name:</label>
     <br />
-    <input type="text" name="clientName" />
+    <input id="clientName" type="text" name="clientName" />
     <br />
     <label>Phone number:</label>
     <br />
-    <input type="text" name="clientNumber" />
+    <input id="clientNumber" type="text" name="clientNumber" />
     <br />
-    <input type="submit" value="MakeOrder" class="btn btn-primary" />
-}
+    <input id="makeOrder" type="submit" value="MakeOrder" data-url="@Url.Action("MakeOrder", "Home")" class="btn btn-primary" />
+@*}*@

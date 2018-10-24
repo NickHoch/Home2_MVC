@@ -5,18 +5,21 @@
         let description = $('#' + id + ' #pizzaDescription').text();
         let quantity = parseInt($('#' + id + ' input').val());
         let totalSum = parseFloat($('#totalSum').text() || 0);
-        let price = parseFloat($(this).data("price"));
-        $('#orderList').append(name + " - " + description + " - " + quantity + " x " + price + "uah<br>");
+        let price = parseFloat($(this).data('price'));
+        $('#orderList').append(name + ' - ' + description + ' - ' + quantity + ' x ' + price + 'uah<br>');
+        let orderList = $('#orderList').text();
         totalSum += price * quantity;
-        $('#totalSum').text(totalSum + "uah");
+        $('#totalSum').text(totalSum + 'uah');
+        let totalSumString = $('#totalSum').text();
 
         let productId = parseInt(id.replace('tr', ''));
-        var data = JSON.stringify({
+        let data = JSON.stringify({
             'id': productId,
-            'quantity': quantity
+            'quantity': quantity,
+            'orderList': orderList,
+            'totalSum': totalSumString
         });
-        var url = $(this).data('url');
-        console.log(url);
+        let url = $(this).data('url');
         $.ajax({
             type: 'POST',
             url: url,

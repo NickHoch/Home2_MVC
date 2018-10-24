@@ -11,61 +11,74 @@ namespace Home2_MVC.Controllers
 {
     public class HomeController : Controller
     {
-        public Model _ctx = new Model();
+        public static Model _ctx = new Model();
 
-        [HttpGet]
+
         public ActionResult Index()
         {
             HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
-            //if (Session["Bucket"] != null)
-            //{
-            //    var bucket = Session["Bucket"];
-            //    var bucketDictionary = bucket as List<ItemOrder>;
-            //    model.Order.Items = bucketDictionary;
-            //    Session["Bucket"] = null;
-            //    Session["Bucket"] = bucket;
-            //}
+            model.OrderList = Session["OrderList"] as string;
+            model.TotalSum = Session["TotalSum"] as string;
+            if (Session["Bucket"] != null)
+            {
+                var bucket = Session["Bucket"] as List<ItemOrder>;
+                Session["Bucket"] = null;
+                Session["Bucket"] = bucket;
+            }
             return View(model);
         }
-
-        public ActionResult Submit(FormCollection formCollection)
+        //[HttpPost]
+        //public ActionResult Index()
+        //{
+        //    HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
+        //    if (Session["Bucket"] != null)
+        //    {
+        //        var bucket = Session["Bucket"] as List<ItemOrder>;
+        //        model.Order.Items = bucket;
+        //        Session["Bucket"] = null;
+        //        Session["Bucket"] = bucket;
+        //    }
+        //    return View(model);            
+        //}
+        [HttpPost]
+        public ActionResult MakeOrder(string clientName, string clientNumber)
         {
             HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
-            var orderList = formCollection["orderList"];
-
             Order order = new Order
             {
                 Info = new ContactInfo
                 {
-                    Name = formCollection["clientName"],
-                    PhoneNumber = formCollection["clientNumber"]
+                    Name = clientName,
+                    PhoneNumber = clientNumber
                 },
                 Items = Session["Bucket"] as List<ItemOrder>
             };
             _ctx.Orders.Add(order);
             _ctx.SaveChanges();
+            Session["OrderList"] = null;
+            Session["TotalSum"] = null;
             return View("Index", model);
         }
-        //[HttpPost]
-        //public ActionResult AddToBucket()
-        //{
-        //    return View();
-        //}
+
         [HttpPost]
-        public ActionResult AddToBucket(int? id, int? quantity)
+        public ActionResult AddToBucket(int? id, int? quantity, string orderList, string totalSum)
         {
             if (id != null && quantity != null)
             {
+                Session["OrderList"] = null;
+                Session["OrderList"] = orderList;
+                Session["TotalSum"] = null;
+                Session["TotalSum"] = totalSum;
                 if (Session["Bucket"] == null)
                 {
                     Session["Bucket"] = new List<ItemOrder>
-                {
-                    new ItemOrder
                     {
-                        ProductId = 1,// _ctx.Products.SingleOrDefault(x => x.Id == id),
-                        Quantity = (int)quantity
-                    }
-                };
+                        new ItemOrder
+                        {
+                            Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
+                            Quantity = (int)quantity
+                        }
+                    };
                 }
                 else
                 {
@@ -73,8 +86,7 @@ namespace Home2_MVC.Controllers
                     var bucketList = bucket as List<ItemOrder>;
                     bucketList.Add(new ItemOrder
                     {
-                        ProductId = 1,
-                        //Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
+                        Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
                         Quantity = (int)quantity
                     });
                     Session["Bucket"] = null;

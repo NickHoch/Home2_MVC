@@ -15,6 +15,8 @@ namespace Home2_MVC.Models
         }
         public Order Order { get; set; }
         public List<Product> Products { get; set; }
+        public string OrderList { get; set; }
+        public string TotalSum { get; set; }
     }
 
 }
