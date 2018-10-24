@@ -21,6 +21,7 @@ namespace Home2_MVC.Models
         public int Price { get; set; }
         public string Description { get; set; }
         public string UrlImage { get; set; }
-        //public virtual ICollection<ItemOrder> ItemOrders { get; set; }
+
+        public virtual ICollection<ItemOrder> ItemOrders { get; set; }
     }
 }

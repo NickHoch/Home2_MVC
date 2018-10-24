@@ -62,7 +62,7 @@ namespace Home2_MVC.Controllers
                 {
                     new ItemOrder
                     {
-                        Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
+                        ProductId = 1,// _ctx.Products.SingleOrDefault(x => x.Id == id),
                         Quantity = (int)quantity
                     }
                 };
@@ -73,7 +73,8 @@ namespace Home2_MVC.Controllers
                     var bucketList = bucket as List<ItemOrder>;
                     bucketList.Add(new ItemOrder
                     {
-                        Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
+                        ProductId = 1,
+                        //Product = _ctx.Products.SingleOrDefault(x => x.Id == id),
                         Quantity = (int)quantity
                     });
                     Session["Bucket"] = null;
