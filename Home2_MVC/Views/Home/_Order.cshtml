@@ -1,21 +1,18 @@
 ﻿@using Home2_MVC.Models
 @model HomeViewModel
 
-@*@using (Html.BeginForm("MakeOrder", "Home", FormMethod.Post))
-{*@
-    <label>Order:</label>
-    <br />
-    <p id="orderList" name ="orderList">@Model.OrderList</p>
-    <label>Total sum:</label>
-    <br />
-    <p id="totalSum">@Model.TotalSum</p>
-    <label>Name:</label>
-    <br />
-    <input id="clientName" type="text" name="clientName" />
-    <br />
-    <label>Phone number:</label>
-    <br />
-    <input id="clientNumber" type="text" name="clientNumber" />
-    <br />
-    <input id="makeOrder" type="submit" value="MakeOrder" data-url="@Url.Action("MakeOrder", "Home")" class="btn btn-primary" />
-@*}*@
+<label>Order:</label>
+<br />
+<p id="orderList" name="orderList">@Html.Raw(Model.OrderList)</p>
+<label>Total sum:</label>
+<br />
+<p id="totalSum">@Model.TotalSum</p>
+<label>Name:</label>
+<br />
+<input id="clientName" type="text" name="clientName" />
+<br />
+<label>Phone number:</label>
+<br />
+<input id="clientNumber" type="text" name="clientNumber" />
+<br />
+<input id="makeOrder" type="submit" value="MakeOrder" data-url="@Url.Action("MakeOrder", "Home")" class="btn btn-primary" />

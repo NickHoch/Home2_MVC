@@ -12,8 +12,6 @@ namespace Home2_MVC.Controllers
     public class HomeController : Controller
     {
         public static Model _ctx = new Model();
-
-
         public ActionResult Index()
         {
             HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
@@ -27,19 +25,7 @@ namespace Home2_MVC.Controllers
             }
             return View(model);
         }
-        //[HttpPost]
-        //public ActionResult Index()
-        //{
-        //    HomeViewModel model = new HomeViewModel(_ctx.Products.ToList());
-        //    if (Session["Bucket"] != null)
-        //    {
-        //        var bucket = Session["Bucket"] as List<ItemOrder>;
-        //        model.Order.Items = bucket;
-        //        Session["Bucket"] = null;
-        //        Session["Bucket"] = bucket;
-        //    }
-        //    return View(model);            
-        //}
+
         [HttpPost]
         public ActionResult MakeOrder(string clientName, string clientNumber)
         {
@@ -61,14 +47,25 @@ namespace Home2_MVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddToBucket(int? id, int? quantity, string orderList, string totalSum)
+        public ActionResult AddToBucket(int? id, int? quantity, string orderItem, string totalSum)
         {
             if (id != null && quantity != null)
             {
-                Session["OrderList"] = null;
-                Session["OrderList"] = orderList;
                 Session["TotalSum"] = null;
                 Session["TotalSum"] = totalSum;
+                Session["OrderList"] = null;
+                Session["OrderList"] = orderItem;
+                //if (Session["OrderList"] == null)
+                //{
+                //    Session["OrderList"] = orderItem;
+                //}
+                //else
+                //{
+                //    var existsOrderList = Session["OrderList"];
+                //    Session["OrderList"] = null;
+                //    Session["OrderList"] = existsOrderList + "\n" + orderItem;
+                //}
+              
                 if (Session["Bucket"] == null)
                 {
                     Session["Bucket"] = new List<ItemOrder>
