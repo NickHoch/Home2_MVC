@@ -6,9 +6,8 @@
         let quantity = parseInt($('#' + id + ' input').val());
         let totalSum = parseFloat($('#totalSum').text() || 0);
         let price = parseFloat($(this).data('price'));
-        //let orderItem = name + ' - ' + description + ' - ' + quantity + ' x ' + price + 'uah<br>';
-        $('#orderList').append(name + ' - ' + description + ' - ' + quantity + ' x ' + price + 'uah<br>');
-        let orderList = $('#orderList').text();
+        let orderItem = name + ' - ' + description + ' - ' + quantity + ' x ' + price + 'uah<br>';
+        $('#orderList').append(orderItem);
         totalSum += price * quantity;
         $('#totalSum').text(totalSum + 'uah');
         let totalSumString = $('#totalSum').text();
@@ -17,7 +16,7 @@
         let data = JSON.stringify({
             'id': productId,
             'quantity': quantity,
-            'orderItem': orderList,
+            'orderItem': orderItem,
             'totalSum': totalSumString
         });
         let url = $(this).data('url');
