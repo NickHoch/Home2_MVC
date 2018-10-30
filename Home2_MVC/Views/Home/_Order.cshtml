@@ -3,7 +3,7 @@
 
 <label>Order:</label>
 <br />
-<p id="orderList" name="orderList">@Html.Raw(Model.OrderList)</p>
+<p id="orderList" name="orderList">@Html.Raw(HttpUtility.HtmlDecode(Model.OrderList))</p>
 <label>Total sum:</label>
 <br />
 <p id="totalSum">@Model.TotalSum</p>

@@ -1,4 +1,6 @@
 ﻿@using Home2_MVC.Models
+@using Home2_MVC.Helpers
 @model Product
-<input type="number" min="0" max="5" value="1" />
+@ListHelper.NumericUpDown(Html, "0", "5", "1");
+@*<input type="number" min="0" max="5" value="1" />*@
 <button data-id=@("tr" + Model.Id) data-price="@Model.Price" data-url="@Url.Action("AddToBucket", "Home")">Buy</button>
