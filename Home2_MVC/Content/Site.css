@@ -20,3 +20,7 @@ textarea {
     width: 100%;
     height: auto;
 }
+
+.numericUpDown {
+    width: 50px;
+}

@@ -16,7 +16,7 @@
         });
         $('#totalSum').empty();
         $('#orderList').empty();
-        //$('#clientName').empty();
-        //$('#clientNumber').empty();
+        $('#clientName').val("");
+        $('#clientNumber').val("");
     });
 });

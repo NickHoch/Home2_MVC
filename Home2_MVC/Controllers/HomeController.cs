@@ -53,8 +53,8 @@ namespace Home2_MVC.Controllers
             {
                 Session["TotalSum"] = null;
                 Session["TotalSum"] = totalSum;
-                Session["OrderList"] = null;
-                Session["OrderList"] = orderItem;
+                //Session["OrderList"] = null;
+                Session["OrderList"] += orderItem;
                 //if (Session["OrderList"] == null)
                 //{
                 //    Session["OrderList"] = orderItem;
